@@ -688,7 +688,7 @@
     <div class="brand-title">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
       <span>Mothotsi Quotation</span>
-      <span class="badge">KV: weel</span>
+      <span class="badge">KV: work</span>
     </div>
 
     <div class="nav-actions">
@@ -702,7 +702,7 @@
         Saved Quotes (<span id="saved-count">0</span>)
       </button>
 
-      <button type="button" class="btn btn-success" id="btn-save-quote" title="Save this quotation to Cloudflare KV (weel)">
+      <button type="button" class="btn btn-success" id="btn-save-quote" title="Save this quotation to Cloudflare KV (work)">
         <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
         Save to KV
       </button>
@@ -726,7 +726,7 @@
         </a>
       </div>
       <div>
-        <span class="badge-kv">KV Namespace: weel</span>
+        <span class="badge-kv">KV Namespace: work</span>
       </div>
     </div>
 
@@ -885,7 +885,7 @@
   <div class="modal-overlay" id="saved-modal">
     <div class="modal-content">
       <div class="modal-header">
-        <h3>Saved Quotations (Cloudflare KV: weel)</h3>
+        <h3>Saved Quotations (Cloudflare KV: work)</h3>
         <button type="button" class="btn-close-modal" id="btn-close-modal">&times;</button>
       </div>
       <div class="modal-body">
@@ -913,7 +913,7 @@
   <div id="toast-container"></div>
 
   <script>
-    // Configuration: Cloudflare Worker backend URL communicating with KV 'weel'
+    // Configuration: Cloudflare Worker backend URL communicating with KV 'work'
     const BACKEND_WORKER_URL = "https://spring-glade-780c.michealtshiamo1.workers.dev";
 
     // Application State
@@ -1108,7 +1108,7 @@
 
         const data = await response.json();
         currentQuoteId = payload.id;
-        showToast("Quotation saved successfully to Cloudflare KV ('weel')!", "success");
+        showToast("Quotation saved successfully to Cloudflare KV ('work')!", "success");
         // Also keep local fallback
         saveToLocalFallback(payload);
         fetchSavedQuotesCount();

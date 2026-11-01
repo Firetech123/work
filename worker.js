@@ -1,6 +1,6 @@
 /**
  * Cloudflare Worker for Quotation Web App
- * Uses Cloudflare KV namespace 'work' (bound as env.weel)
+ * Uses Cloudflare KV namespace 'work' (supporting env.work or env.weel binding)
  */
 
 export default {
@@ -35,12 +35,15 @@ export default {
     };
 
     try {
+      // Resolve KV namespace safely regardless of whether bound as 'work' or 'weel'
+      const kv = env && (env.work || env.weel);
+
       // Health check or root endpoint
       if (pathname === "/" || pathname === "/api" || pathname === "/api/health") {
         return jsonResponse({
           success: true,
           service: "Quotation API",
-          namespace: "weel",
+          namespace: "work",
           endpoints: [
             { method: "GET", path: "/api/quotes", description: "List all quotations" },
             { method: "GET", path: "/api/quotes/:id", description: "Get quotation by ID" },
@@ -51,9 +54,9 @@ export default {
         });
       }
 
-      // Ensure KV namespace 'weel' is bound
-      if (!env.weel) {
-        return errorResponse("Cloudflare KV namespace 'work' is not bound. Please bind 'weel' in wrangler.toml or Worker settings.", 500);
+      // Ensure KV namespace is bound
+      if (!kv) {
+        return errorResponse("Cloudflare KV namespace 'work' is not bound. Please bind 'work' in wrangler.toml or Worker settings.", 500);
       }
 
       // Router for /api/quotes
@@ -64,7 +67,7 @@ export default {
         // GET /api/quotes or GET /api/quotes/:id
         if (request.method === "GET") {
           if (id) {
-            const rawData = await env.work.get(`quote:${id}`);
+            const rawData = await kv.get(`quote:${id}`);
             if (!rawData) {
               return errorResponse(`Quotation with id '${id}' not found`, 404);
             }
@@ -73,11 +76,11 @@ export default {
           } else {
             // List all quotations
             // KV list returns keys with prefix 'quote:'
-            const listResult = await env.work.list({ prefix: "quote:" });
+            const listResult = await kv.list({ prefix: "quote:" });
             const quotes = [];
             for (const key of listResult.keys) {
               // Read summary metadata or full data
-              const rawData = await env.work.get(key.name);
+              const rawData = await kv.get(key.name);
               if (rawData) {
                 try {
                   const parsed = JSON.parse(rawData);
@@ -120,7 +123,7 @@ export default {
           };
 
           const keyName = `quote:${quoteId}`;
-          await env.weel.put(keyName, JSON.stringify(quoteData), {
+          await kv.put(keyName, JSON.stringify(quoteData), {
             metadata: {
               id: quoteId,
               clientName: quoteData.clientName || "",
@@ -149,7 +152,7 @@ export default {
             return errorResponse("Invalid JSON payload", 400);
           }
 
-          const existingRaw = await env.work.get(`quote:${id}`);
+          const existingRaw = await kv.get(`quote:${id}`);
           let existingData = {};
           if (existingRaw) {
             try {
@@ -166,7 +169,7 @@ export default {
           };
 
           const keyName = `quote:${id}`;
-          await env.weel.put(keyName, JSON.stringify(updatedQuote), {
+          await kv.put(keyName, JSON.stringify(updatedQuote), {
             metadata: {
               id: id,
               clientName: updatedQuote.clientName || "",
@@ -189,12 +192,12 @@ export default {
           }
 
           const keyName = `quote:${id}`;
-          const existing = await env.work.get(keyName);
+          const existing = await kv.get(keyName);
           if (!existing) {
             return errorResponse(`Quotation with id '${id}' not found`, 404);
           }
 
-          await env.weel.delete(keyName);
+          await kv.delete(keyName);
 
           return jsonResponse({
             success: true,
