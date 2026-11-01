@@ -1,6 +1,6 @@
 /**
  * Cloudflare Worker for Quotation Web App
- * Uses Cloudflare KV namespace 'weel' (bound as env.weel)
+ * Uses Cloudflare KV namespace 'work' (bound as env.weel)
  */
 
 export default {
@@ -53,7 +53,7 @@ export default {
 
       // Ensure KV namespace 'weel' is bound
       if (!env.weel) {
-        return errorResponse("Cloudflare KV namespace 'weel' is not bound. Please bind 'weel' in wrangler.toml or Worker settings.", 500);
+        return errorResponse("Cloudflare KV namespace 'work' is not bound. Please bind 'weel' in wrangler.toml or Worker settings.", 500);
       }
 
       // Router for /api/quotes
@@ -64,7 +64,7 @@ export default {
         // GET /api/quotes or GET /api/quotes/:id
         if (request.method === "GET") {
           if (id) {
-            const rawData = await env.weel.get(`quote:${id}`);
+            const rawData = await env.work.get(`quote:${id}`);
             if (!rawData) {
               return errorResponse(`Quotation with id '${id}' not found`, 404);
             }
@@ -73,11 +73,11 @@ export default {
           } else {
             // List all quotations
             // KV list returns keys with prefix 'quote:'
-            const listResult = await env.weel.list({ prefix: "quote:" });
+            const listResult = await env.work.list({ prefix: "quote:" });
             const quotes = [];
             for (const key of listResult.keys) {
               // Read summary metadata or full data
-              const rawData = await env.weel.get(key.name);
+              const rawData = await env.work.get(key.name);
               if (rawData) {
                 try {
                   const parsed = JSON.parse(rawData);
@@ -131,7 +131,7 @@ export default {
 
           return jsonResponse({
             success: true,
-            message: "Quotation saved successfully to KV namespace 'weel'",
+            message: "Quotation saved successfully to KV namespace 'work'",
             quotation: quoteData,
           }, 201);
         }
@@ -149,7 +149,7 @@ export default {
             return errorResponse("Invalid JSON payload", 400);
           }
 
-          const existingRaw = await env.weel.get(`quote:${id}`);
+          const existingRaw = await env.work.get(`quote:${id}`);
           let existingData = {};
           if (existingRaw) {
             try {
@@ -177,7 +177,7 @@ export default {
 
           return jsonResponse({
             success: true,
-            message: "Quotation updated successfully in KV namespace 'weel'",
+            message: "Quotation updated successfully in KV namespace 'work'",
             quotation: updatedQuote,
           });
         }
@@ -189,7 +189,7 @@ export default {
           }
 
           const keyName = `quote:${id}`;
-          const existing = await env.weel.get(keyName);
+          const existing = await env.work.get(keyName);
           if (!existing) {
             return errorResponse(`Quotation with id '${id}' not found`, 404);
           }
@@ -198,7 +198,7 @@ export default {
 
           return jsonResponse({
             success: true,
-            message: `Quotation '${id}' deleted successfully from KV namespace 'weel'`,
+            message: `Quotation '${id}' deleted successfully from KV namespace 'work'`,
             id: id,
           });
         }
