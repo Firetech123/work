@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mothotsi Welding & Aluminium Projects - Quotation System</title>
+  <style>
+    :root {
+      --primary: #1e293b;
+      --accent: #c29b38;
+      --accent-hover: #a68228;
+      --bg: #f1f5f9;
+      --text: #0f172a;
+      --border: #333333;
+      --line-height: 1.5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Bar */
+    header.top-nav {
+      background: #111827;
+      color: #fff;
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-title span.badge {
+      background: var(--accent);
+      color: #000;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .nav-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .btn-primary {
+      background: #0284c7;
+      color: #ffffff;
+    }
+    .btn-primary:hover:not(:disabled) {
+      background: #0369a1;
+    }
+
+    .btn-success {
+      background: #16a34a;
+      color: #ffffff;
+    }
+    .btn-success:hover:not(:disabled) {
+      background: #15803d;
+    }
+
+    .btn-secondary {
+      background: #374151;
+      color: #ffffff;
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: #4b5563;
+    }
+
+    .btn-warning {
+      background: var(--accent);
+      color: #111827;
+    }
+    .btn-warning:hover:not(:disabled) {
+      background: var(--accent-hover);
+    }
+
+    .btn-danger {
+      background: #dc2626;
+      color: #ffffff;
+    }
+    .btn-danger:hover:not(:disabled) {
+      background: #b91c1c;
+    }
+
+    .btn-sm {
+      padding: 4px 8px;
+      font-size: 0.8rem;
+    }
+
+    /* Main Container */
+    main.container {
+      flex: 1;
+      max-width: 960px;
+      width: 100%;
+      margin: 20px auto;
+      padding: 0 16px;
+    }
+
+    /* Status Bar Banner */
+    .status-banner {
+      background: #e0f2fe;
+      border: 1px solid #7dd3fc;
+      color: #0369a1;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.88rem;
+    }
+
+    .status-banner .worker-link {
+      font-weight: bold;
+      color: #0284c7;
+      word-break: break-all;
+    }
+
+    .badge-kv {
+      background: #0284c7;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+    }
+
+    /* Quotation Document Sheet - Matches IMG_6107.jpeg */
+    .quote-paper {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      padding: 36px 40px;
+      position: relative;
+      background-image:
+        radial-gradient(ellipse at center, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.85) 100%),
+        url('quotation-template.jpeg');
+      background-repeat: no-repeat;
+      background-position: center bottom;
+      background-size: cover;
+    }
+
+    /* Header Section */
+    .quote-header {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      margin-bottom: 24px;
+    }
+
+    .logo-container {
+      max-width: 380px;
+      width: 100%;
+      margin: 0 auto 12px auto;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border: 2px solid #333;
+      background: #111;
+    }
+
+    .logo-container img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+
+    .flag-sa {
+      position: absolute;
+      top: 100px;
+      right: 20px;
+      width: 60px;
+      height: 40px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+      border-radius: 2px;
+      border: 1px solid #ddd;
+    }
+
+    .title-pill {
+      display: inline-block;
+      background: #1e293b;
+      color: #f8fafc;
+      font-size: 1.15rem;
+      letter-spacing: 2px;
+      padding: 6px 24px;
+      border-radius: 4px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .company-name {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: #111827;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .company-sub {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #374151;
+      margin-top: 2px;
+    }
+
+    .company-cell {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: #0f172a;
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Client & Meta Info */
+    .quote-meta-grid {
+      display: grid;
+      grid-template-columns: 2fr 1.2fr;
+      gap: 20px;
+      margin-top: 20px;
+      margin-bottom: 25px;
+      font-size: 0.95rem;
+    }
+
+    .field-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+
+    .field-label {
+      font-weight: 700;
+      color: #111827;
+      min-width: 85px;
+    }
+
+    .field-input {
+      flex: 1;
+      border: none;
+      border-bottom: 1px dotted #475569;
+      background: transparent;
+      padding: 4px 8px;
+      font-size: 0.95rem;
+      color: #0f172a;
+      outline: none;
+      transition: border-bottom 0.2s;
+    }
+
+    .field-input:focus {
+      border-bottom: 1.5px solid #0284c7;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    /* Items Table */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      margin-bottom: 16px;
+      background: rgba(255, 255, 255, 0.75);
+      border-radius: 4px;
+    }
+
+    table.quote-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid #333333;
+    }
+
+    table.quote-table th {
+      background-color: rgba(243, 244, 246, 0.95);
+      border: 1px solid #333333;
+      padding: 8px 12px;
+      font-weight: 800;
+      font-style: italic;
+      color: #111827;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+    }
+
+    table.quote-table td {
+      border: 1px solid #4b5563;
+      padding: 6px 10px;
+      vertical-align: middle;
+      font-size: 0.95rem;
+    }
+
+    .col-qty { width: 10%; text-align: center; }
+    .col-desc { width: 52%; }
+    .col-unit { width: 18%; text-align: right; }
+    .col-amount { width: 20%; text-align: right; }
+    .col-action { width: 35px; text-align: center; }
+
+    .table-input {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: inherit;
+      font-size: 0.95rem;
+      padding: 4px;
+      color: #111827;
+    }
+
+    .table-input:focus {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 3px;
+      box-shadow: inset 0 0 0 1px #0284c7;
+    }
+
+    .table-input.text-center { text-align: center; }
+    .table-input.text-right { text-align: right; }
+
+    .btn-row-delete {
+      background: transparent;
+      border: none;
+      color: #ef4444;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      line-height: 1;
+    }
+
+    .btn-row-delete:hover {
+      background: #fee2e2;
+    }
+
+    .btn-add-item {
+      margin-bottom: 20px;
+    }
+
+    /* Summary & Structure Grid */
+    .quote-footer-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .structure-box {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .structure-label {
+      font-weight: 800;
+      font-style: italic;
+      color: #111827;
+      font-size: 0.95rem;
+    }
+
+    .structure-input {
+      width: 100%;
+      height: 95px;
+      border: 1.5px solid #333333;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 0.95rem;
+      border-radius: 4px;
+      resize: vertical;
+      outline: none;
+    }
+
+    .structure-input:focus {
+      background: #ffffff;
+      border-color: #0284c7;
+    }
+
+    .totals-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1.5px solid #333333;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .totals-table td {
+      border: 1px solid #4b5563;
+      padding: 6px 12px;
+      font-size: 0.95rem;
+    }
+
+    .totals-table td.label-col {
+      font-weight: 800;
+      color: #111827;
+      text-transform: uppercase;
+      font-style: italic;
+      width: 45%;
+    }
+
+    .totals-table td.val-col {
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .totals-table tr.grand-total {
+      background: rgba(226, 232, 240, 0.8);
+      font-size: 1.05rem;
+    }
+
+    .totals-table tr.grand-total td {
+      font-weight: 900;
+      color: #000;
+    }
+
+    /* Terms & Footer */
+    .terms-section {
+      margin-top: 30px;
+      border-top: 1px dashed #64748b;
+      padding-top: 16px;
+      font-size: 0.82rem;
+      font-style: italic;
+      color: #334155;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    .terms-section p {
+      margin-bottom: 4px;
+    }
+
+    .web-footer {
+      margin-top: 25px;
+      text-align: center;
+      position: relative;
+    }
+
+    .web-footer-divider {
+      margin: 0 auto 10px auto;
+      width: 140px;
+      height: 12px;
+      background: radial-gradient(ellipse at center, #c29b38 0%, transparent 70%);
+      opacity: 0.8;
+    }
+
+    .web-link {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0f172a;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      display: inline-block;
+      transition: color 0.2s;
+    }
+
+    .web-link:hover {
+      color: #0284c7;
+    }
+
+    /* Modal for Saved Quotes */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 16px;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      width: 100%;
+      max-width: 800px;
+      max-height: 85vh;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      background: #1e293b;
+      color: #fff;
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+    }
+
+    .btn-close-modal {
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .saved-list-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .saved-list-table th, .saved-list-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #e2e8f0;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .saved-list-table th {
+      background: #f8fafc;
+      font-weight: 700;
+      color: #475569;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #64748b;
+    }
+
+    /* Toast Notification */
+    #toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #1e293b;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn 0.3s ease;
+      min-width: 250px;
+    }
+
+    .toast.success { border-left: 5px solid #22c55e; }
+    .toast.error { border-left: 5px solid #ef4444; }
+    .toast.info { border-left: 5px solid #0ea5e9; }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    /* Print Specific Styling */
+    @media print {
+      body {
+        background: white;
+        color: black;
+      }
+      header.top-nav,
+      .status-banner,
+      .no-print,
+      .btn-row-delete,
+      #toast-container,
+      .modal-overlay {
+        display: none !important;
+      }
+      main.container {
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .quote-paper {
+        border: none !important;
+        box-shadow: none !important;
+        padding: 10mm 15mm !important;
+        background-size: cover !important;
+      }
+      .field-input {
+        border-bottom: 1px dotted #000 !important;
+      }
+      table.quote-table, .totals-table {
+        border: 1.5px solid #000 !important;
+      }
+      table.quote-table th, table.quote-table td, .totals-table td {
+        border: 1px solid #000 !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .quote-meta-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .quote-footer-grid {
+        grid-template-columns: 1fr;
+      }
+      .quote-paper {
+        padding: 20px 16px;
+      }
+      .flag-sa {
+        top: 20px;
+        right: 10px;
+        width: 45px;
+        height: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation & Actions Bar -->
+  <header class="top-nav">
+    <div class="brand-title">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+      <span>Mothotsi Quotation</span>
+      <span class="badge">KV: weel</span>
+    </div>
+
+    <div class="nav-actions">
+      <button type="button" class="btn btn-secondary" id="btn-new-quote" title="Start a fresh blank quotation">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+        New Quote
+      </button>
+
+      <button type="button" class="btn btn-secondary" id="btn-view-saved" title="View quotations saved in Cloudflare KV">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+        Saved Quotes (<span id="saved-count">0</span>)
+      </button>
+
+      <button type="button" class="btn btn-success" id="btn-save-quote" title="Save this quotation to Cloudflare KV (weel)">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        Save to KV
+      </button>
+
+      <button type="button" class="btn btn-primary" id="btn-print" title="Print quotation or save as PDF">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        Print / PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Workspace -->
+  <main class="container">
+
+    <!-- Backend Connection Indicator Banner -->
+    <div class="status-banner no-print">
+      <div>
+        <strong>Connected Backend:</strong>
+        <a href="https://spring-glade-780c.michealtshiamo1.workers.dev/" target="_blank" rel="noopener" class="worker-link">
+          https://spring-glade-780c.michealtshiamo1.workers.dev/
+        </a>
+      </div>
+      <div>
+        <span class="badge-kv">KV Namespace: weel</span>
+      </div>
+    </div>
+
+    <!-- The Quotation Sheet -->
+    <div class="quote-paper" id="quotation-sheet">
+
+      <!-- South African Flag -->
+      <svg class="flag-sa" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg">
+        <clipPath id="sa-clip">
+          <path d="M 0,0 L 900,0 L 900,600 L 0,600 Z"/>
+        </clipPath>
+        <g clip-path="url(#sa-clip)">
+          <path d="M 0,0 L 900,0 L 900,300 L 0,300 Z" fill="#E03C31"/>
+          <path d="M 0,300 L 900,300 L 900,600 L 0,600 Z" fill="#001489"/>
+          <path d="M 0,0 L 450,300 L 0,600 Z" fill="#000000"/>
+          <path d="M 0,0 L 450,300 L 0,600" fill="none" stroke="#FFB81C" stroke-width="80"/>
+          <path d="M 0,0 L 450,300 L 900,300 L 900,300 L 450,300 L 0,600" fill="none" stroke="#FFFFFF" stroke-width="120"/>
+          <path d="M 0,0 L 450,300 L 900,300 M 450,300 L 0,600" fill="none" stroke="#007749" stroke-width="80"/>
+          <path d="M 0,0 L 375,300 L 0,600 Z" fill="#000000"/>
+        </g>
+      </svg>
+
+      <!-- Quotation Header / Branding -->
+      <div class="quote-header">
+        <div class="title-pill">QUOTATION</div>
+
+        <!-- Emblem Logo -->
+        <div class="logo-container">
+          <img src="quotation-template.jpeg" alt="MOTHOTSI Welding & Aluminium Projects Emblem">
+        </div>
+
+        <h1 class="company-name">MOTHOTSI</h1>
+        <div class="company-sub">Welding & Aluminium Projects</div>
+        <div class="company-cell">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          <span>0646228454</span>
+        </div>
+      </div>
+
+      <!-- Client & Quote Details -->
+      <div class="quote-meta-grid">
+        <div class="client-details">
+          <div class="field-row">
+            <span class="field-label">To Client:</span>
+            <input type="text" id="quote-client" class="field-input" placeholder="e.g. John Doe / ABC Enterprises">
+          </div>
+          <div class="field-row">
+            <span class="field-label">Address:</span>
+            <input type="text" id="quote-address" class="field-input" placeholder="e.g. 124 Main Road, Pretoria">
+          </div>
+          <div class="field-row">
+            <span class="field-label">Cell:</span>
+            <input type="text" id="quote-cell" class="field-input" placeholder="e.g. 082 123 4567">
+          </div>
+        </div>
+
+        <div class="meta-details">
+          <div class="field-row">
+            <span class="field-label">Date:</span>
+            <input type="date" id="quote-date" class="field-input">
+          </div>
+          <div class="field-row">
+            <span class="field-label">Quote #:</span>
+            <input type="text" id="quote-number" class="field-input" placeholder="e.g. Q-1001">
+          </div>
+          <div class="field-row">
+            <span class="field-label">Currency:</span>
+            <select id="quote-currency" class="field-input" style="cursor: pointer;">
+              <option value="R">R (ZAR - South African Rand)</option>
+              <option value="$">$ (USD)</option>
+              <option value="P">P (BWP - Botswana Pula)</option>
+              <option value="€">€ (EUR)</option>
+              <option value="£">£ (GBP)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quotation Line Items Table -->
+      <div class="table-container">
+        <table class="quote-table" id="items-table">
+          <thead>
+            <tr>
+              <th class="col-qty">QTY</th>
+              <th class="col-desc">DESCRIPTION</th>
+              <th class="col-unit">UNIT PRICE</th>
+              <th class="col-amount">AMOUNT</th>
+              <th class="col-action no-print"></th>
+            </tr>
+          </thead>
+          <tbody id="items-body">
+            <!-- Rows dynamically populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="no-print">
+        <button type="button" class="btn btn-sm btn-secondary btn-add-item" id="btn-add-row">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"></path></svg>
+          Add Item Row
+        </button>
+      </div>
+
+      <!-- Bottom Grid: Structure & Totals -->
+      <div class="quote-footer-grid">
+        <div class="structure-box">
+          <span class="structure-label">STRUCTURE:</span>
+          <textarea id="quote-structure" class="structure-input" placeholder="e.g. Double Carport 6m x 6m, Galvanized Steel Frame with IBR Sheeting, Primed and Coated."></textarea>
+        </div>
+
+        <div class="totals-box">
+          <table class="totals-table">
+            <tr>
+              <td class="label-col">SUB TOTAL</td>
+              <td class="val-col" id="val-subtotal">R 0.00</td>
+            </tr>
+            <tr>
+              <td class="label-col">SM</td>
+              <td class="val-col">
+                <input type="text" id="quote-sm" class="table-input text-right" placeholder="0.00" style="width: 100%;">
+              </td>
+            </tr>
+            <tr>
+              <td class="label-col">
+                VAT (<input type="number" id="vat-rate" value="15" style="width: 38px; border: 1px solid #ccc; text-align: center; border-radius: 2px;">%)
+              </td>
+              <td class="val-col" id="val-vat">R 0.00</td>
+            </tr>
+            <tr class="grand-total">
+              <td class="label-col">TOTAL</td>
+              <td class="val-col" id="val-grandtotal">R 0.00</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Terms & Conditions Matching IMG_6107.jpeg -->
+      <div class="terms-section">
+        <p>TERMS STRICTLY IN ACCORDANCE TO THE PERIOD GIVEN TO CREDIT APPROVED CLIENT.</p>
+        <p>50% DEPOSIT ON PLACING OF ORDER, BALANCE PAID AFTER INSTALLATION.</p>
+        <p>INSTALLATION WILL TAKE 7 DAYS.</p>
+      </div>
+
+      <!-- Footer Branding & Link -->
+      <div class="web-footer">
+        <div class="web-footer-divider"></div>
+        <a href="http://Mothotsi-weldinium.steel-tech.co.za/" target="_blank" rel="noopener" class="web-link">
+          Mothotsi-weldinium.steel-tech.co.za/
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Modal: Saved Quotes Drawer -->
+  <div class="modal-overlay" id="saved-modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Saved Quotations (Cloudflare KV: weel)</h3>
+        <button type="button" class="btn-close-modal" id="btn-close-modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="saved-list-container">
+          <table class="saved-list-table">
+            <thead>
+              <tr>
+                <th>Quote #</th>
+                <th>Client</th>
+                <th>Date</th>
+                <th>Total</th>
+                <th style="text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="saved-list-body">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container"></div>
+
+  <script>
+    // Configuration: Cloudflare Worker backend URL communicating with KV 'weel'
+    const BACKEND_WORKER_URL = "https://spring-glade-780c.michealtshiamo1.workers.dev";
+
+    // Application State
+    let items = [
+      { qty: 1, desc: "Steel Carport Frame Structure (6m x 6m)", unitPrice: 12500, amount: 12500 },
+      { qty: 6, desc: "IBR Chromadek Roof Sheets (0.5mm)", unitPrice: 850, amount: 5100 },
+      { qty: 1, desc: "Installation, Primer & Paint Finishing", unitPrice: 3500, amount: 3500 },
+      { qty: "", desc: "", unitPrice: "", amount: "" },
+      { qty: "", desc: "", unitPrice: "", amount: "" }
+    ];
+
+    let currentQuoteId = null;
+
+    // Toast feedback helper
+    function showToast(message, type = "info") {
+      const container = document.getElementById("toast-container");
+      const toast = document.createElement("div");
+      toast.className = `toast ${type}`;
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Initialize Default Values
+    function initDefaults() {
+      const today = new Date().toISOString().split("T")[0];
+      document.getElementById("quote-date").value = today;
+      document.getElementById("quote-number").value = "MW-" + Math.floor(1000 + Math.random() * 9000);
+      document.getElementById("quote-client").value = "Bokang Mokoena";
+      document.getElementById("quote-address").value = "345 Pretorius St, Pretoria Central";
+      document.getElementById("quote-cell").value = "071 234 5678";
+      document.getElementById("quote-structure").value = "Double Vehicle Steel Structure Carport (6m x 6m) with Galvanized Square Tubing and Lip Channels.";
+      document.getElementById("quote-sm").value = "36 m²";
+    }
+
+    // Currency Formatter
+    function getCurrencySymbol() {
+      return document.getElementById("quote-currency").value || "R";
+    }
+
+    function formatMoney(amount) {
+      const num = parseFloat(amount) || 0;
+      return `${getCurrencySymbol()} ${num.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    // Render Table Rows
+    function renderItems() {
+      const tbody = document.getElementById("items-body");
+      tbody.innerHTML = "";
+
+      items.forEach((item, index) => {
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+          <td class="col-qty">
+            <input type="number" min="0" step="any" class="table-input text-center item-qty" data-index="${index}" value="${item.qty !== '' ? item.qty : ''}" placeholder="1">
+          </td>
+          <td class="col-desc">
+            <input type="text" class="table-input item-desc" data-index="${index}" value="${escapeHtml(item.desc || '')}" placeholder="Item description...">
+          </td>
+          <td class="col-unit">
+            <input type="number" min="0" step="any" class="table-input text-right item-unit" data-index="${index}" value="${item.unitPrice !== '' ? item.unitPrice : ''}" placeholder="0.00">
+          </td>
+          <td class="col-amount text-right" id="item-amount-${index}">
+            ${item.amount !== "" && item.amount !== undefined ? formatMoney(item.amount) : "-"}
+          </td>
+          <td class="col-action no-print">
+            <button type="button" class="btn-row-delete" data-index="${index}" title="Remove row">&times;</button>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+
+      calculateTotals();
+    }
+
+    function escapeHtml(string) {
+      return String(string)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Recalculate Totals
+    function calculateTotals() {
+      let subtotal = 0;
+
+      items.forEach((item, idx) => {
+        const qty = parseFloat(item.qty);
+        const unit = parseFloat(item.unitPrice);
+        if (!isNaN(qty) && !isNaN(unit)) {
+          const rowAmount = qty * unit;
+          item.amount = rowAmount;
+          subtotal += rowAmount;
+          const amtElem = document.getElementById(`item-amount-${idx}`);
+          if (amtElem) amtElem.innerText = formatMoney(rowAmount);
+        } else {
+          item.amount = "";
+          const amtElem = document.getElementById(`item-amount-${idx}`);
+          if (amtElem) amtElem.innerText = "-";
+        }
+      });
+
+      const vatRate = parseFloat(document.getElementById("vat-rate").value) || 0;
+      const vatAmount = subtotal * (vatRate / 100);
+      const grandTotal = subtotal + vatAmount;
+
+      document.getElementById("val-subtotal").innerText = formatMoney(subtotal);
+      document.getElementById("val-vat").innerText = formatMoney(vatAmount);
+      document.getElementById("val-grandtotal").innerText = formatMoney(grandTotal);
+
+      return { subtotal, vatRate, vatAmount, grandTotal };
+    }
+
+    // Gather Full Quotation Object
+    function getQuotationPayload() {
+      const totals = calculateTotals();
+      return {
+        id: currentQuoteId || document.getElementById("quote-number").value.trim() || `Q-${Date.now()}`,
+        quoteNumber: document.getElementById("quote-number").value.trim(),
+        date: document.getElementById("quote-date").value,
+        clientName: document.getElementById("quote-client").value.trim(),
+        clientAddress: document.getElementById("quote-address").value.trim(),
+        clientCell: document.getElementById("quote-cell").value.trim(),
+        currency: document.getElementById("quote-currency").value,
+        structure: document.getElementById("quote-structure").value,
+        sm: document.getElementById("quote-sm").value,
+        items: items.filter(it => it.desc || it.qty || it.unitPrice),
+        subtotal: totals.subtotal,
+        vatRate: totals.vatRate,
+        vatAmount: totals.vatAmount,
+        total: totals.grandTotal,
+        savedAt: new Date().toISOString()
+      };
+    }
+
+    // Load Quotation into Form
+    function loadQuotation(quote) {
+      currentQuoteId = quote.id;
+      document.getElementById("quote-number").value = quote.quoteNumber || quote.id || "";
+      document.getElementById("quote-date").value = quote.date || "";
+      document.getElementById("quote-client").value = quote.clientName || "";
+      document.getElementById("quote-address").value = quote.clientAddress || "";
+      document.getElementById("quote-cell").value = quote.clientCell || "";
+      document.getElementById("quote-currency").value = quote.currency || "R";
+      document.getElementById("quote-structure").value = quote.structure || "";
+      document.getElementById("quote-sm").value = quote.sm || "";
+      if (quote.vatRate !== undefined) {
+        document.getElementById("vat-rate").value = quote.vatRate;
+      }
+
+      if (Array.isArray(quote.items) && quote.items.length > 0) {
+        items = quote.items.map(it => ({
+          qty: it.qty,
+          desc: it.desc,
+          unitPrice: it.unitPrice,
+          amount: it.amount
+        }));
+      } else {
+        items = [{ qty: "", desc: "", unitPrice: "", amount: "" }];
+      }
+
+      renderItems();
+      showToast(`Loaded quotation ${quote.quoteNumber || quote.id}`, "info");
+      closeModal();
+    }
+
+    // Save to Cloudflare KV via Worker
+    async function saveQuotationToKV() {
+      const payload = getQuotationPayload();
+      const saveBtn = document.getElementById("btn-save-quote");
+      saveBtn.disabled = true;
+      saveBtn.innerHTML = "Saving...";
+
+      try {
+        const response = await fetch(`${BACKEND_WORKER_URL}/api/quotes`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error(`Server returned HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        currentQuoteId = payload.id;
+        showToast("Quotation saved successfully to Cloudflare KV ('weel')!", "success");
+        // Also keep local fallback
+        saveToLocalFallback(payload);
+        fetchSavedQuotesCount();
+      } catch (err) {
+        console.warn("Worker error or network error, saving to local cache:", err);
+        saveToLocalFallback(payload);
+        showToast(`Saved locally (Backend notice: ${err.message})`, "info");
+      } finally {
+        saveBtn.disabled = false;
+        saveBtn.innerHTML = `
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+          Save to KV
+        `;
+      }
+    }
+
+    // LocalStorage Fallback helper (maintains data even if offline/worker not deployed yet)
+    function getLocalQuotes() {
+      try {
+        return JSON.parse(localStorage.getItem("mothotsi_quotes") || "[]");
+      } catch(e) {
+        return [];
+      }
+    }
+
+    function saveToLocalFallback(quote) {
+      const list = getLocalQuotes();
+      const idx = list.findIndex(q => q.id === quote.id);
+      if (idx >= 0) {
+        list[idx] = quote;
+      } else {
+        list.unshift(quote);
+      }
+      localStorage.setItem("mothotsi_quotes", JSON.stringify(list));
+      updateSavedCountDisplay(list.length);
+    }
+
+    // Fetch Saved Quotes
+    async function fetchSavedQuotes() {
+      let quotes = [];
+      try {
+        const res = await fetch(`${BACKEND_WORKER_URL}/api/quotes`);
+        if (res.ok) {
+          const data = await res.json();
+          if (data.quotations && Array.isArray(data.quotations)) {
+            quotes = data.quotations;
+          }
+        }
+      } catch (e) {
+        console.warn("Could not fetch remote quotes, using fallback:", e);
+      }
+
+      // Merge with local fallback
+      const local = getLocalQuotes();
+      const mergedMap = new Map();
+      quotes.forEach(q => mergedMap.set(q.id, q));
+      local.forEach(q => {
+        if (!mergedMap.has(q.id)) {
+          mergedMap.set(q.id, q);
+        }
+      });
+
+      return Array.from(mergedMap.values());
+    }
+
+    async function fetchSavedQuotesCount() {
+      const quotes = await fetchSavedQuotes();
+      updateSavedCountDisplay(quotes.length);
+    }
+
+    function updateSavedCountDisplay(count) {
+      const countEl = document.getElementById("saved-count");
+      if (countEl) countEl.innerText = count;
+    }
+
+    // Delete Quote
+    async function deleteQuotation(id) {
+      if (!confirm(`Are you sure you want to delete quotation ${id}?`)) return;
+
+      try {
+        await fetch(`${BACKEND_WORKER_URL}/api/quotes/${encodeURIComponent(id)}`, {
+          method: "DELETE"
+        });
+      } catch(e) {
+        console.warn("Remote delete failed, deleting locally:", e);
+      }
+
+      // Remove from local fallback
+      const list = getLocalQuotes().filter(q => q.id !== id);
+      localStorage.setItem("mothotsi_quotes", JSON.stringify(list));
+
+      showToast(`Quotation ${id} deleted`, "info");
+      openSavedModal();
+      fetchSavedQuotesCount();
+    }
+
+    // Saved Modal Logic
+    async function openSavedModal() {
+      const modal = document.getElementById("saved-modal");
+      const tbody = document.getElementById("saved-list-body");
+      tbody.innerHTML = `<tr><td colspan="5" class="empty-state">Loading quotations from KV...</td></tr>`;
+      modal.classList.add("active");
+
+      const quotes = await fetchSavedQuotes();
+      updateSavedCountDisplay(quotes.length);
+
+      if (quotes.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">No saved quotations found in Cloudflare KV. Click "Save to KV" to store one!</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = "";
+      quotes.forEach(q => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><strong>${escapeHtml(q.quoteNumber || q.id)}</strong></td>
+          <td>${escapeHtml(q.clientName || "-")}</td>
+          <td>${escapeHtml(q.date || "-")}</td>
+          <td><strong>${q.currency || "R"} ${(q.total || 0).toLocaleString(undefined, { minimumFractionDigits: 2 })}</strong></td>
+          <td style="text-align: right; white-space: nowrap;">
+            <button type="button" class="btn btn-sm btn-primary btn-load-quote" data-id="${escapeHtml(q.id)}">Load</button>
+            <button type="button" class="btn btn-sm btn-danger btn-delete-quote" data-id="${escapeHtml(q.id)}" style="margin-left: 6px;">Delete</button>
+          </td>
+        `;
+
+        tr.querySelector(".btn-load-quote").addEventListener("click", () => {
+          loadQuotation(q);
+        });
+
+        tr.querySelector(".btn-delete-quote").addEventListener("click", () => {
+          deleteQuotation(q.id);
+        });
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function closeModal() {
+      document.getElementById("saved-modal").classList.remove("active");
+    }
+
+    // Reset to blank quote
+    function resetForm() {
+      if (confirm("Create a new quotation? Unsaved changes will be cleared.")) {
+        currentQuoteId = null;
+        document.getElementById("quote-client").value = "";
+        document.getElementById("quote-address").value = "";
+        document.getElementById("quote-cell").value = "";
+        document.getElementById("quote-structure").value = "";
+        document.getElementById("quote-sm").value = "";
+        document.getElementById("quote-number").value = "MW-" + Math.floor(1000 + Math.random() * 9000);
+        document.getElementById("quote-date").value = new Date().toISOString().split("T")[0];
+        items = [
+          { qty: 1, desc: "", unitPrice: 0, amount: 0 },
+          { qty: "", desc: "", unitPrice: "", amount: "" },
+          { qty: "", desc: "", unitPrice: "", amount: "" }
+        ];
+        renderItems();
+        showToast("Started fresh quotation", "info");
+      }
+    }
+
+    // Event Listeners
+    document.addEventListener("DOMContentLoaded", () => {
+      initDefaults();
+      renderItems();
+      fetchSavedQuotesCount();
+
+      // Add Row
+      document.getElementById("btn-add-row").addEventListener("click", () => {
+        items.push({ qty: 1, desc: "", unitPrice: 0, amount: 0 });
+        renderItems();
+      });
+
+      // Delegate Table input edits
+      document.getElementById("items-body").addEventListener("input", (e) => {
+        const target = e.target;
+        const index = target.getAttribute("data-index");
+        if (index === null) return;
+
+        if (target.classList.contains("item-qty")) {
+          items[index].qty = target.value;
+        } else if (target.classList.contains("item-desc")) {
+          items[index].desc = target.value;
+        } else if (target.classList.contains("item-unit")) {
+          items[index].unitPrice = target.value;
+        }
+        calculateTotals();
+      });
+
+      // Delegate Row Delete
+      document.getElementById("items-body").addEventListener("click", (e) => {
+        if (e.target.classList.contains("btn-row-delete")) {
+          const index = parseInt(e.target.getAttribute("data-index"), 10);
+          items.splice(index, 1);
+          if (items.length === 0) {
+            items.push({ qty: "", desc: "", unitPrice: "", amount: "" });
+          }
+          renderItems();
+        }
+      });
+
+      // VAT & Currency Changes
+      document.getElementById("vat-rate").addEventListener("input", calculateTotals);
+      document.getElementById("quote-currency").addEventListener("change", () => {
+        renderItems();
+      });
+
+      // Action Buttons
+      document.getElementById("btn-save-quote").addEventListener("click", saveQuotationToKV);
+      document.getElementById("btn-print").addEventListener("click", () => window.print());
+      document.getElementById("btn-new-quote").addEventListener("click", resetForm);
+      document.getElementById("btn-view-saved").addEventListener("click", openSavedModal);
+      document.getElementById("btn-close-modal").addEventListener("click", closeModal);
+
+      // Close modal on background click
+      document.getElementById("saved-modal").addEventListener("click", (e) => {
+        if (e.target.id === "saved-modal") closeModal();
+      });
+    });
+  </script>
+</body>
+</html>
