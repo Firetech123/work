@@ -173,7 +173,7 @@
       margin: 0 auto;
       background-color: #ffffff;
       background-image:
-        linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.90)),
+        linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.93)),
         url('quotation-background.jpg');
       background-repeat: no-repeat;
       background-position: center center;
@@ -206,30 +206,20 @@
       height: 96px;
       border-radius: 50%;
       border: 2px solid var(--accent-gold);
-      background: radial-gradient(circle, #1a2a3a 0%, #0d131a 100%);
-      color: #fff;
-      text-align: center;
-      padding: 6px;
-      font-size: 8pt;
-      font-weight: bold;
+      background-color: #1a2a3a;
+      overflow: hidden;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: inset 0 0 10px rgba(184, 151, 66, 0.5), 0 3px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
     }
 
-    .badge-circle .welder-icon {
-      margin-bottom: 3px;
-      opacity: 0.95;
-    }
-
-    .badge-circle span {
-      font-size: 6.5pt;
+    .badge-circle img.logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      color: var(--accent-light-gold);
-      margin-top: 2px;
-      font-weight: normal;
+      border-radius: 50%;
     }
 
     .company-title {
@@ -838,14 +828,7 @@
         <tr>
           <td class="logo-cell">
             <div class="badge-circle">
-              <!-- Welder SVG icon inside badge -->
-              <svg class="welder-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2a5 5 0 0 0-5 5v2H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h2v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2h2a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-2V7a5 5 0 0 0-5-5z"></path>
-                <line x1="8" y1="11" x2="16" y2="11"></line>
-                <line x1="12" y1="14" x2="12" y2="17"></line>
-              </svg>
-              MOTHOTSI
-              <span>Welding &amp; Aluminium</span>
+              <img src="logo.png" alt="Mothotsi Welding & Aluminium Projects Logo" class="logo-img">
             </div>
           </td>
           <td class="company-title">
