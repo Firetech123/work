@@ -173,7 +173,7 @@
       margin: 0 auto;
       background-color: #ffffff;
       background-image:
-        linear-gradient(rgba(255, 255, 255, 0.88), rgba(255, 255, 255, 0.90)),
+        linear-gradient(rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.93)),
         url('quotation-background.jpg');
       background-repeat: no-repeat;
       background-position: center center;
@@ -206,30 +206,20 @@
       height: 96px;
       border-radius: 50%;
       border: 2px solid var(--accent-gold);
-      background: radial-gradient(circle, #1a2a3a 0%, #0d131a 100%);
-      color: #fff;
-      text-align: center;
-      padding: 6px;
-      font-size: 8pt;
-      font-weight: bold;
+      background-color: #1a2a3a;
+      overflow: hidden;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      box-shadow: inset 0 0 10px rgba(184, 151, 66, 0.5), 0 3px 6px rgba(0,0,0,0.2);
+      box-shadow: 0 3px 8px rgba(0,0,0,0.25);
     }
 
-    .badge-circle .welder-icon {
-      margin-bottom: 3px;
-      opacity: 0.95;
-    }
-
-    .badge-circle span {
-      font-size: 6.5pt;
+    .badge-circle img.logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
-      color: var(--accent-light-gold);
-      margin-top: 2px;
-      font-weight: normal;
+      border-radius: 50%;
     }
 
     .company-title {
@@ -786,8 +776,8 @@
     <div class="nav-actions">
       <!-- Currency selector -->
       <select id="quote-currency" class="currency-select" title="Select Currency">
+        <option value="R" selected>R (ZAR - South African Rand)</option>
         <option value="$">$ (USD)</option>
-        <option value="R">R (ZAR - South African Rand)</option>
         <option value="P">P (BWP - Botswana Pula)</option>
         <option value="€">€ (EUR)</option>
         <option value="£">£ (GBP)</option>
@@ -838,14 +828,7 @@
         <tr>
           <td class="logo-cell">
             <div class="badge-circle">
-              <!-- Welder SVG icon inside badge -->
-              <svg class="welder-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2a5 5 0 0 0-5 5v2H5a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h2v2a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-2h2a2 2 0 0 0 2-2v-5a2 2 0 0 0-2-2h-2V7a5 5 0 0 0-5-5z"></path>
-                <line x1="8" y1="11" x2="16" y2="11"></line>
-                <line x1="12" y1="14" x2="12" y2="17"></line>
-              </svg>
-              MOTHOTSI
-              <span>Welding &amp; Aluminium</span>
+              <img src="logo.png" alt="Mothotsi Welding & Aluminium Projects Logo" class="logo-img">
             </div>
           </td>
           <td class="company-title">
@@ -900,7 +883,6 @@
             <th>DESCRIPTION</th>
             <th class="right">UNIT PRICE</th>
             <th class="center">QTY</th>
-            <th class="center">TAXED</th>
             <th class="right">AMOUNT</th>
             <th class="center no-print" style="width: 35px;"></th>
           </tr>
@@ -939,37 +921,18 @@
             <table class="totals-table">
               <tr>
                 <td class="t-label">Subtotal</td>
-                <td class="t-curr" id="curr-subtotal">$</td>
+                <td class="t-curr" id="curr-subtotal">R</td>
                 <td class="t-val" id="val-subtotal">680.00</td>
               </tr>
               <tr>
-                <td class="t-label">Taxable</td>
-                <td class="t-curr" id="curr-taxable">$</td>
-                <td class="t-val" id="val-taxable">75.00</td>
-              </tr>
-              <tr>
-                <td class="t-label">Tax rate</td>
-                <td class="t-curr"></td>
-                <td class="t-val">
-                  <input type="number" step="0.001" id="tax-rate-input" class="total-input" value="6.250">%
-                </td>
-              </tr>
-              <tr>
-                <td class="t-label">Tax due</td>
-                <td class="t-curr" id="curr-taxdue">$</td>
-                <td class="t-val" id="val-taxdue">4.69</td>
-              </tr>
-              <tr>
-                <td class="t-label">Other</td>
-                <td class="t-curr" id="curr-other">$</td>
-                <td class="t-val">
-                  <input type="number" step="any" id="other-input" class="total-input" placeholder="0.00">
-                </td>
+                <td class="t-label">VAT (<input type="number" step="any" id="vat-rate-input" class="total-input" style="width: 45px; text-align: right;" value="15">%)</td>
+                <td class="t-curr" id="curr-vat">R</td>
+                <td class="t-val" id="val-vat">102.00</td>
               </tr>
               <tr class="total-row">
                 <td class="t-label">TOTAL</td>
-                <td class="t-curr" id="curr-total">$</td>
-                <td class="t-val" id="val-grandtotal">684.69</td>
+                <td class="t-curr" id="curr-total">R</td>
+                <td class="t-val" id="val-grandtotal">782.00</td>
               </tr>
             </table>
           </td>
@@ -1022,10 +985,10 @@
 
     // Application State matching the new quote layout
     let items = [
-      { desc: "[Service Fee]", unitPrice: 230.00, qty: 1, taxed: false, amount: 230.00 },
-      { desc: "[Labor @ $75/hr]", unitPrice: 75.00, qty: 5, taxed: false, amount: 375.00 },
-      { desc: "[Parts]", unitPrice: 25.00, qty: 3, taxed: true, amount: 75.00 },
-      { desc: "New client discount", unitPrice: "", qty: "", taxed: false, amount: "" }
+      { desc: "[Service Fee]", unitPrice: 230.00, qty: 1, amount: 230.00 },
+      { desc: "[Labor @ R75/hr]", unitPrice: 75.00, qty: 5, amount: 375.00 },
+      { desc: "[Parts]", unitPrice: 25.00, qty: 3, amount: 75.00 },
+      { desc: "New client discount", unitPrice: "", qty: "", amount: "" }
     ];
 
     let currentQuoteId = null;
@@ -1045,15 +1008,13 @@
 
     // Currency Symbol Helper
     function getCurrencySymbol() {
-      return document.getElementById("quote-currency").value || "$";
+      return document.getElementById("quote-currency").value || "R";
     }
 
     function updateCurrencyLabels() {
       const curr = getCurrencySymbol();
       document.getElementById("curr-subtotal").innerText = curr;
-      document.getElementById("curr-taxable").innerText = curr;
-      document.getElementById("curr-taxdue").innerText = curr;
-      document.getElementById("curr-other").innerText = curr;
+      document.getElementById("curr-vat").innerText = curr;
       document.getElementById("curr-total").innerText = curr;
     }
 
@@ -1080,9 +1041,6 @@
           <td class="center">
             <input type="number" min="0" step="any" class="table-input center item-qty" data-index="${index}" value="${item.qty !== '' && item.qty !== undefined ? item.qty : ''}" placeholder="-">
           </td>
-          <td class="center">
-            <input type="checkbox" class="taxed-checkbox item-taxed" data-index="${index}" ${item.taxed ? 'checked' : ''}>
-          </td>
           <td class="right" id="item-amount-${index}">
             ${item.amount !== "" && item.amount !== undefined ? formatNumber(item.amount) : "-"}
           </td>
@@ -1108,7 +1066,6 @@
     // Recalculate Totals
     function calculateTotals() {
       let subtotal = 0;
-      let taxable = 0;
 
       items.forEach((item, idx) => {
         const qty = parseFloat(item.qty);
@@ -1117,9 +1074,6 @@
           const rowAmount = qty * unit;
           item.amount = rowAmount;
           subtotal += rowAmount;
-          if (item.taxed) {
-            taxable += rowAmount;
-          }
           const amtElem = document.getElementById(`item-amount-${idx}`);
           if (amtElem) amtElem.innerText = formatNumber(rowAmount);
         } else {
@@ -1129,17 +1083,15 @@
         }
       });
 
-      const taxRate = parseFloat(document.getElementById("tax-rate-input").value) || 0;
-      const taxDue = taxable * (taxRate / 100);
-      const otherVal = parseFloat(document.getElementById("other-input").value) || 0;
-      const grandTotal = subtotal + taxDue + otherVal;
+      const vatRate = parseFloat(document.getElementById("vat-rate-input").value) || 0;
+      const vatAmount = subtotal * (vatRate / 100);
+      const grandTotal = subtotal + vatAmount;
 
       document.getElementById("val-subtotal").innerText = formatNumber(subtotal);
-      document.getElementById("val-taxable").innerText = formatNumber(taxable);
-      document.getElementById("val-taxdue").innerText = formatNumber(taxDue);
+      document.getElementById("val-vat").innerText = formatNumber(vatAmount);
       document.getElementById("val-grandtotal").innerText = formatNumber(grandTotal);
 
-      return { subtotal, taxable, taxRate, taxDue, other: otherVal, grandTotal };
+      return { subtotal, vatRate, vatAmount, grandTotal };
     }
 
     // Gather Full Quotation Object
@@ -1160,10 +1112,8 @@
         currency: getCurrencySymbol(),
         items: items.filter(it => it.desc || it.qty || it.unitPrice),
         subtotal: totals.subtotal,
-        taxable: totals.taxable,
-        taxRate: totals.taxRate,
-        taxDue: totals.taxDue,
-        other: totals.other,
+        vatRate: totals.vatRate,
+        vatAmount: totals.vatAmount,
         total: totals.grandTotal,
         savedAt: new Date().toISOString()
       };
@@ -1188,11 +1138,10 @@
       }
       updateCurrencyLabels();
 
-      if (quote.taxRate !== undefined) {
-        document.getElementById("tax-rate-input").value = quote.taxRate;
-      }
-      if (quote.other !== undefined) {
-        document.getElementById("other-input").value = quote.other ? quote.other : "";
+      if (quote.vatRate !== undefined) {
+        document.getElementById("vat-rate-input").value = quote.vatRate;
+      } else if (quote.taxRate !== undefined) {
+        document.getElementById("vat-rate-input").value = quote.taxRate;
       }
 
       if (Array.isArray(quote.items) && quote.items.length > 0) {
@@ -1200,11 +1149,10 @@
           desc: it.desc || "",
           unitPrice: it.unitPrice !== undefined ? it.unitPrice : "",
           qty: it.qty !== undefined ? it.qty : "",
-          taxed: !!it.taxed,
           amount: it.amount
         }));
       } else {
-        items = [{ desc: "", unitPrice: "", qty: "", taxed: false, amount: "" }];
+        items = [{ desc: "", unitPrice: "", qty: "", amount: "" }];
       }
 
       renderItems();
@@ -1393,12 +1341,12 @@
         document.getElementById("client-address").value = "";
         document.getElementById("client-city-zip").value = "";
         document.getElementById("client-phone").value = "";
-        document.getElementById("other-input").value = "";
+        document.getElementById("vat-rate-input").value = "15";
 
         items = [
-          { desc: "", unitPrice: "", qty: "", taxed: false, amount: "" },
-          { desc: "", unitPrice: "", qty: "", taxed: false, amount: "" },
-          { desc: "", unitPrice: "", qty: "", taxed: false, amount: "" }
+          { desc: "", unitPrice: "", qty: "", amount: "" },
+          { desc: "", unitPrice: "", qty: "", amount: "" },
+          { desc: "", unitPrice: "", qty: "", amount: "" }
         ];
 
         renderItems();
@@ -1414,7 +1362,7 @@
 
       // Add Row
       document.getElementById("btn-add-row").addEventListener("click", () => {
-        items.push({ desc: "", unitPrice: "", qty: "", taxed: false, amount: "" });
+        items.push({ desc: "", unitPrice: "", qty: "", amount: "" });
         renderItems();
       });
 
@@ -1434,31 +1382,20 @@
         calculateTotals();
       });
 
-      // Delegate Checkbox edits
-      document.getElementById("items-body").addEventListener("change", (e) => {
-        const target = e.target;
-        if (target.classList.contains("item-taxed")) {
-          const index = target.getAttribute("data-index");
-          items[index].taxed = target.checked;
-          calculateTotals();
-        }
-      });
-
       // Delegate Row Delete
       document.getElementById("items-body").addEventListener("click", (e) => {
         if (e.target.classList.contains("btn-row-delete")) {
           const index = parseInt(e.target.getAttribute("data-index"), 10);
           items.splice(index, 1);
           if (items.length === 0) {
-            items.push({ desc: "", unitPrice: "", qty: "", taxed: false, amount: "" });
+            items.push({ desc: "", unitPrice: "", qty: "", amount: "" });
           }
           renderItems();
         }
       });
 
-      // Tax Rate, Other adjustments, Currency
-      document.getElementById("tax-rate-input").addEventListener("input", calculateTotals);
-      document.getElementById("other-input").addEventListener("input", calculateTotals);
+      // VAT Rate & Currency changes
+      document.getElementById("vat-rate-input").addEventListener("input", calculateTotals);
       document.getElementById("quote-currency").addEventListener("change", () => {
         updateCurrencyLabels();
         calculateTotals();
